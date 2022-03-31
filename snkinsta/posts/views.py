@@ -21,16 +21,16 @@ posts = [
     {
         'title': 'sea ',
         'user': {
-            'name': 'Mikasa Akerman',
+            'name': 'Mikasa Ackerman',
             'picture': 'https://picsum.photos/60/60/?image=1005'
         },
         'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
         'photo': 'https://www.tonica.la/__export/1620830185141/sites/debate/img/2021/05/12/mikasa-ackerman-se-quedx-con-jean.jpg_1902800913.jpg',
     },
     {
-        'title': 'beaten the beast ',
+        'title': 'beating the beast ',
         'user': {
-            'name': 'Levi Akerman',
+            'name': 'Levi Ackerman',
             'picture': 'https://picsum.photos/60/60/?image=883'
         },
         'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
