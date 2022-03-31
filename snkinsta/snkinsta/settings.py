@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 #se definen todas las apps que funcionan en nuestro proyecto
-
+    'users.apps.UsersConfig',
     'posts.apps.PostsConfig',
 ]
 
