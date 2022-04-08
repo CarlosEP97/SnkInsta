@@ -2,6 +2,7 @@
 """Posts views."""
 # Django
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required # The login_required decorator
 from django.http import HttpResponse
 
 # Utilities
@@ -38,7 +39,7 @@ posts = [
     }
 ]
 
-
+@login_required # podemos acceder al feed si tenemos un sesion activa
 def list_posts(request):
     """List existing posts."""
     return render(request, 'posts/feed.html', {'posts': posts})
