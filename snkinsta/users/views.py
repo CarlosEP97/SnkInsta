@@ -32,12 +32,16 @@ def signup(request):
     # import pdb; pdb.set_trace()
     """Sign up view."""
     if request.method == 'POST':
+        email = request.POST['email']
         username = request.POST['username']
         passwd = request.POST['passwd']
         passwd_confirmation = request.POST['passwd_confirmation']
 
         if passwd != passwd_confirmation:
             return render(request, 'users/signup.html', {'error': 'Password confirmation does not match'})
+
+        if User.objects.filter(email=email):
+            return render(request, 'users/signup.html', {'error': 'Email is already in used!'})
 
         try:
             user = User.objects.create_user(username=username, password=passwd)
