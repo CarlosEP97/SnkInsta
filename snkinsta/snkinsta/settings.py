@@ -51,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #custom middle
+    'snkinsta.middleware.ProfileCompletionMiddleware',
 ]
 
 ROOT_URLCONF = 'snkinsta.urls'
