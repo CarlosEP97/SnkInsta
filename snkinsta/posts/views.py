@@ -1,45 +1,41 @@
 
 """Posts views."""
 # Django
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required # The login_required decorator
+
 from django.http import HttpResponse
+#model
+
+from .models import Post
+
+
+#Forms
+
+from .forms import PostForm
 
 # Utilities
 from datetime import datetime
 
 
-posts = [
-    {
-        'title': 'declaration of war',
-        'user': {
-            'name': 'Eren Jaeger',
-            'picture': 'https://picsum.photos/60/60/?image=1027'
-        },
-        'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'photo': 'https://animenewsandfacts.com/wp-content/uploads/2020/12/Attack-On-Titan-Season-4-Episode-5-Countdown.jpg',
-    },
-    {
-        'title': 'sea ',
-        'user': {
-            'name': 'Mikasa Ackerman',
-            'picture': 'https://picsum.photos/60/60/?image=1005'
-        },
-        'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'photo': 'https://www.tonica.la/__export/1620830185141/sites/debate/img/2021/05/12/mikasa-ackerman-se-quedx-con-jean.jpg_1902800913.jpg',
-    },
-    {
-        'title': 'beating the beast ',
-        'user': {
-            'name': 'Levi Ackerman',
-            'picture': 'https://picsum.photos/60/60/?image=883'
-        },
-        'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'photo': 'https://pbs.twimg.com/media/EceJXtZWsAAHRsm.jpg',
-    }
-]
 
 @login_required # podemos acceder al feed si tenemos un sesion activa
 def list_posts(request):
     """List existing posts."""
+    posts = Post.objects.all().order_by('-created')
+
     return render(request, 'posts/feed.html', {'posts': posts})
+
+@login_required
+def create_post(request):
+    """""create new post view"""
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('posts:feed')
+
+    else:
+        form = PostForm()
+
+    return render(request,'posts/new.html',{'form':form, 'user': request.user, 'profile': request.user.profile})
