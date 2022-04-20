@@ -135,6 +135,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / 'media' # agregar visualizador  de media al admin
 MEDIA_URL = '/media/'
 
-
+#for user the login required decorator
 LOGIN_URL = '/users/login' # login user
-
