@@ -3,12 +3,13 @@
 # Django
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required # The login_required decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
 
 from django.http import HttpResponse
 #model
 
 from .models import Post
-
 
 #Forms
 
@@ -19,12 +20,23 @@ from datetime import datetime
 
 
 
-@login_required # podemos acceder al feed si tenemos un sesion activa
-def list_posts(request):
-    """List existing posts."""
-    posts = Post.objects.all().order_by('-created')
+# @login_required # podemos acceder al feed si tenemos un sesion activa
+# def list_posts(request):
+#     """List existing posts."""
+#     posts = Post.objects.all().order_by('-created')
+#
+#     return render(request, 'posts/feed.html', {'posts': posts})
 
-    return render(request, 'posts/feed.html', {'posts': posts})
+class PostsFeedView(LoginRequiredMixin, ListView):
+    """Return all published posts."""
+
+    template_name = 'posts/feed.html'
+    model = Post
+    ordering = ('-created',)
+    paginate_by = 6
+    context_object_name = 'posts'
+
+
 
 @login_required
 def create_post(request):
