@@ -50,7 +50,7 @@ class SignupForm(forms.Form):
     def clean(self):
         """Verify password confirmation match."""
         data = super().clean() #llama al metodo antes de ser sobre escrito,
-        # super().clean() ensures that any validation logic in parent classes is maintained
+        # super().clean() ensures that any validation logic in parent classes is maintained 'inherits'
         password = data['password']
         password_confirmation = data['password_confirmation']
 
