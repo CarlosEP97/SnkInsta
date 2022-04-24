@@ -5,14 +5,63 @@
 # Django
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required # The login_required decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
+
 #Django Models
 from django.contrib.auth.models import User #ModelUser
-from .models import Profile
+from posts.models import Post
+
 #Django exceptions
 from django.db.utils import IntegrityError
+
 # Forms
 from .forms import ProfileForm,SignupForm
+
+
+class UserDetailView(LoginRequiredMixin,DetailView):
+    ''''user detailview'''
+    template_name = 'users/detail.html' # recibe el template
+    slug_field = 'username' # the name of the field on the model that contains the slug. By default, slug_field is 'slug'.
+    #slug execute the queryset for find a user with that username.
+    slug_url_kwarg = 'username' # The name of the URLConf keyword argument that contains the slug. By default, slug_url_kwarg is 'slug'.
+    queryset = User.objects.all() # The model that this view will display data for. ia specifying queryset
+    #A QuerySet that represents the objects. If provided, the value of queryset supersedes the value provided for model.
+    context_object_name = 'user' # Designates the name of the variable to use in the context.,Model name in template
+
+    def get_context_data(self, **kwargs):
+        # Returns context data for displaying the object.
+        #The base implementation of this method requires that the self.object attribute be set by the view
+        #While this view is executing, self.object will contain the object that the view is operating upon
+        #self.objects is the model or the queryset instance of the model
+        """Add user's posts to context."""
+        context = super().get_context_data(**kwargs) #llama al metodo antes de ser sobre escrito,
+        user = self.get_object() # If queryset is provided, that queryset will be used as the source of objects
+        #Otherwise get_queryset() will be used
+        context['posts'] = Post.objects.filter(user=user).order_by('-created')  # context is just a dictionary
+        # print(context)
+        return context
+    # model = User
+    # template_name = 'users/detail.html'
+    # slug_field = 'username'
+    # slug_url_kwarg = 'username'
+    # context_object_name = 'user'
+    #
+    # def get_queryset(self):
+    #     user = User.objects.all()
+    #     return user
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     user = self.get_object()
+    #     context['posts'] = Post.objects.filter(user=user).order_by('-created')
+    #     return context
+
+
+
 
 @login_required
 def update_profile(request):
@@ -33,9 +82,10 @@ def update_profile(request):
                 profile.picture = data['picture']
                 profile.save()
 
-                return redirect('users:update_profile')
-
-        else:
+                # url = reverse('users:detail', kwargs ={'username': request.user.username})
+                # return redirect(url) # redirect no puede construir la URl como reverse
+                return HttpResponseRedirect(reverse('users:detail', kwargs ={'username': request.user.username}))
+        else:                                                       # args = (request.user.username,)
             form = ProfileForm()
 
         return render(
