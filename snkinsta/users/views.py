@@ -28,7 +28,9 @@ class UserDetailView(LoginRequiredMixin,DetailView):
     slug_field = 'username' # the name of the field on the model that contains the slug. By default, slug_field is 'slug'.
     #slug execute the queryset for find a user with that username.
     slug_url_kwarg = 'username' # The name of the URLConf keyword argument that contains the slug. By default, slug_url_kwarg is 'slug'.
-    queryset = User.objects.all() # The model that this view will display data for. ia specifying queryset
+    queryset = User.objects.all()
+    # ese query recibe el username que entra en el slug o el parametro por url
+    # The model that this view will display data for. ia specifying queryset
     #A QuerySet that represents the objects. If provided, the value of queryset supersedes the value provided for model.
     context_object_name = 'user' # Designates the name of the variable to use in the context.,Model name in template
 
@@ -44,6 +46,7 @@ class UserDetailView(LoginRequiredMixin,DetailView):
         context['posts'] = Post.objects.filter(user=user).order_by('-created')  # context is just a dictionary
         # print(context)
         return context
+
     # model = User
     # template_name = 'users/detail.html'
     # slug_field = 'username'
