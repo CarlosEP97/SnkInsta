@@ -4,7 +4,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required # The login_required decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 
 from django.http import HttpResponse
 #model
@@ -33,8 +33,10 @@ class PostsFeedView(LoginRequiredMixin, ListView):
     template_name = 'posts/feed.html'
     model = Post
     ordering = ('-created',)
-    paginate_by = 6
+    paginate_by = 20
     context_object_name = 'posts'
+
+
 
 
 
