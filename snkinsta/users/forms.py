@@ -14,6 +14,26 @@ from .models import Profile
 class SignupForm(forms.Form):
     """Sign up form."""
 
+    # username = forms.CharField(min_length=4, max_length=50)
+    #
+    # password = forms.CharField(
+    #     max_length=70,
+    #     widget=forms.PasswordInput()
+    # )
+    # password_confirmation = forms.CharField(
+    #     max_length=70,
+    #     widget=forms.PasswordInput()
+    # )
+    #
+    # first_name = forms.CharField(min_length=2, max_length=50)
+    # last_name = forms.CharField(min_length=2, max_length=50)
+    #
+    # email = forms.CharField(
+    #     min_length=6,
+    #     max_length=70,
+    #     widget=forms.EmailInput()
+    # )
+
     username = forms.CharField(label=False, min_length=4, max_length=50, widget=forms.TextInput(
         attrs={'placeholder': 'Username', 'class': 'form-control', 'required': True}))
 
@@ -69,10 +89,10 @@ class SignupForm(forms.Form):
         profile.save()
 
 
-class ProfileForm(forms.Form):
-    """Profile form."""
-
-    website = forms.URLField(max_length=200, required=True)
-    biography = forms.CharField(max_length=500, required=False)
-    phone_number = forms.CharField(max_length=20, required=False)
-    picture = forms.ImageField()
+# class ProfileForm(forms.Form):
+#     """Profile form."""
+#
+#     website = forms.URLField(max_length=200, required=True)
+#     biography = forms.CharField(max_length=500, required=False)
+#     phone_number = forms.CharField(max_length=20, required=False)
+#     picture = forms.ImageField()

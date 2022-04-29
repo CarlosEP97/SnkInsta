@@ -137,3 +137,7 @@ MEDIA_URL = '/media/'
 
 #for user the login required decorator
 LOGIN_URL = '/users/login' # login user
+
+
+LOGIN_REDIRECT_URL = '/posts' # user login redirect view
+LOGOUT_REDIRECT_URL = LOGIN_URL # logoutview redirect
