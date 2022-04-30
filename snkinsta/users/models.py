@@ -21,7 +21,7 @@ class Profile(models.Model):
         blank=True,
         null=True
     )
-
+    followers = models.ManyToManyField(User,related_name='following',blank=True) # recive users
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
