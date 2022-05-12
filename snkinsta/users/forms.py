@@ -82,7 +82,7 @@ class SignupForm(forms.Form):
     def save(self):
         """Create user and profile."""
         data = self.cleaned_data
-        data.pop('password_confirmation')
+        data.pop('password_confirmation') # dont need
 
         user = User.objects.create_user(**data)
         profile = Profile(user=user)

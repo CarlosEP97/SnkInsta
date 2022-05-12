@@ -40,3 +40,4 @@
 #     obj = User(**user)
 #     obj.save()
 #     print(obj.pk, ':', obj.email)
+

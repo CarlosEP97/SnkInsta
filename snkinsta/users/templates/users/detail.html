@@ -30,12 +30,17 @@
                         Edit profile
                         </a>
                         {% else %}
-                        <a
-                                href=""
-                                class="ml-5 btn btn-sm btn-primary"
-                        >
-                            Follow
-                        </a>
+                        {% if is_following %}
+                        <form method="POST" action="{% url 'users:removefollower' user.username %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary" type="submit">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form method="POST" action="{% url 'users:addfollower' user.username %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-primary" type="submit">Follow</button>
+                        </form>
+                        {% endif %}
                         {% endif %}
                     </h2>
 
@@ -44,10 +49,10 @@
                         <b>{{posts|length}}</b> Posts
                     </div>
                     <div class="col-sm-4">
-                        <b>{{ user.profile.followers|length }}</b> followers
+                        <b>{{ number_followers }}</b> followers
                     </div>
                     <div class="col-sm-4">
-                        <b>{{ user.profile.following }}0</b> following
+                        <b>{{ user.following.all|length}}</b> following
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -55,9 +60,11 @@
                         <p>{{ user.profile.biography }}</p>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
     <hr>
 
@@ -74,4 +81,3 @@
     </div>
 
 {% endblock %}
-

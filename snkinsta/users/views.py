@@ -35,6 +35,7 @@ class UserDetailView(LoginRequiredMixin,DetailView):
     #slug execute the queryset for find a user with that username.
     slug_url_kwarg = 'username' # The name of the URLConf keyword argument that contains the slug. By default, slug_url_kwarg is 'slug'.
     queryset = User.objects.all() # ese query recibe el username que entra en el slug o el parametro por url
+
     # The model that this view will display data for. ia specifying queryset
     #A QuerySet that represents the objects. If provided, the value of queryset supersedes the value provided for model.
     context_object_name = 'user' # Designates the name of the variable to use in the context.,Model name in template
@@ -51,6 +52,23 @@ class UserDetailView(LoginRequiredMixin,DetailView):
         #Otherwise get_queryset() will be used
         context['posts'] = Post.objects.filter(user=user).order_by('-created')  # context is just a dictionary
         # print(context)
+        profile = user.profile
+        followers = profile.followers.all()
+
+        if len(followers) == 0:
+            is_following = False
+
+        for follower in followers:
+            if follower == self.request.user:
+                is_following = True
+                break
+            else:
+                is_following = False
+
+        number_followers = len(followers)
+
+        context['is_following'] = is_following
+        context['number_followers']= number_followers
         return context
 
 
@@ -84,6 +102,47 @@ class UserDetailView(LoginRequiredMixin,DetailView):
     #     return context
 
 
+# @login_required
+# def userdetail(request,username):
+#     user = get_object_or_404(User, username=username)
+#     profile = user.profile
+#     posts = Post.objects.filter(user=user).order_by('-created')
+#
+#     followers = profile.followers.all()
+#
+#     if len(followers)== 0:
+#         is_following = False
+#
+#     for follower in followers:
+#         if follower == request.user:
+#             is_following = True
+#             break
+#         else:
+#             is_following = False
+#
+#     number_followers = len(followers)
+#     return render(request, 'users/detail.html', {
+#         'user': user,
+#         'posts': posts,
+#         'profile':profile,
+#         'number_followers':number_followers,
+#         'is_following': is_following,
+#
+#     })
+
+@login_required
+def addfollower(request,username):
+    user = get_object_or_404(User, username=username)
+    user.profile.followers.add(request.user)
+    return HttpResponseRedirect(reverse('users:detail', kwargs={'username': username}))
+
+@login_required
+def removefollower(request,username):
+    user = get_object_or_404(User, username=username)
+    user.profile.followers.remove(request.user)
+    return HttpResponseRedirect(reverse('users:detail', kwargs={'username': username}))
+
+
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     # retrieve specific object/data
     #add/update data base
@@ -96,7 +155,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         """Return user's profile."""
-        return self.request.user.profile  #objeto que va a actualizar , este query trae el profile
+        return self.request.user.profile  #objeto que va a actualizar , este query trae el profile,lo retorna
 
     def get_success_url(self):
         """Return to user's profile."""
@@ -177,7 +236,7 @@ class SignupView(FormView):
     def form_valid(self, form):
         '''save form data'''
         form.save()  # save form
-        return super().form_valid(form)
+        return super().form_valid(form) # hereda la redireccion del metodo por eso usamos super()
 
 
 

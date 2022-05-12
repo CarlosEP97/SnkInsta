@@ -34,3 +34,14 @@ class ProfileFollowTests(TestCase):
         self.assertTrue(qs.exists())
         self.assertFalse(first_user_following_no_one.exists())
 
+    # p = Profile.objects.first() -> get de user profile
+    # p.followers.add(someUser) -> add a follower for a user
+    # p.followers.all() -> all users following this profile/user
+
+    # user.following.all() -> all users i follow.
+    # user has acces to the list of user in profile model followers
+
+    # user.followers_set.all -> is the same without related name
+
+    # followers add or remove a user from a user profile
+    # following show how many users the user follow

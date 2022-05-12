@@ -14,6 +14,7 @@ class ProfileAdmin(admin.ModelAdmin):
     """Profile admin."""
 
     list_display = ('pk', 'user', 'phone_number', 'website', 'picture')
+    filter_horizontal = ('followers',)
     list_display_links = ('pk', 'user',)
     list_editable = ('phone_number', 'website', 'picture')
 
@@ -39,7 +40,8 @@ class ProfileAdmin(admin.ModelAdmin):
         ('Extra info', {
             'fields': (
                 ('website', 'phone_number'),
-                ('biography')
+                ('biography'),('followers'),
+
             )
         }),
         ('Metadata', {
@@ -56,7 +58,7 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = 'profiles'
-
+    filter_horizontal = ('followers',)
 
 class UserAdmin(BaseUserAdmin):
     """Add profile admin to base user admin."""

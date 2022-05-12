@@ -8,5 +8,6 @@ urlpatterns = [
     # path('new',views.create_post, name = 'create_post'),
     path('new',views.CreatePostView.as_view(), name = 'create_post'),
     path('<int:pk>',views.PostDetailView.as_view(),name='detail'),
+    path('<int:pk>/like',views.likes,name='likes')
 
 ]
